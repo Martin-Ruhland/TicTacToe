@@ -77,14 +77,14 @@
 		// function that gets called when a field is clicked and handels everything related to checking and setting the X's and O's
 		function clickAction(selectedField) {
 			if (document.getElementById(selectedField).value == 'X' || document.getElementById(selectedField).value == 'O' ) {
-				console.log("Code unterbrochen");
+				console.log("interupted the code");
 			}
 			else {
 				splitToArray(selectedField);
 				writeToArray();	
 			}
 			if (gameFinished == true) {
-				console.log("Code unterbrochen");
+				console.log("interupted the code");
 			}
 			else {
 				setXorO(selectedField);
@@ -96,7 +96,7 @@
 		// sets X or O depending on what was set before
 		function setXorO (selectedField) {
 			if (document.getElementById(selectedField).value == 'X' || document.getElementById(selectedField).value == 'O' ) {
-				alert("Setzen nicht möglich!");
+				alert("Field is already occupied!");
 			}
 			else {
 				if (XorO == true) {
