@@ -3,30 +3,43 @@
 	<head>
 		<title>Tic Tac Toe</title>
 		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=450" />
 		<style type="text/css">
 			body {
 				background-color: grey;
+				font-family: arial;
+			}
+			
+			#playField {
+				width: 312px;
+				height: 312px;
+				margin: auto;
 			}
 			
 			#playField input {
 				width: 100px;
 				height: 100px;
 				font-size: 90px;
+				text-shadow: 0 0 4px #FFFFFF;
 				margin: 2px;
-			}
-			
-			#container {
-				background-color: white;
-				width: 315px;
-				margin: 20px auto;
-				padding: 20px;
-				box-shadow: 0 0 15px black;
+				border: 1px solid #BDBDBD;
+				padding: 0;
 			}
 			
 			#playField p {
 				margin: 0;
 				padding: 0;
 			}
+			
+			#container {
+				background-color: white;
+				width: 350px;
+				margin: 20px auto;
+				padding: 20px;
+				box-shadow: 0 0 15px black;
+			}
+			
+
 		</style>
 		<script>
 		var arrayField, arrayFieldId, selectedField, clickActionField, XorO, Row, Column, rowInNumber, columnInNumber, columnAdded, rowAdded, cGreen, gameFinished;
@@ -274,13 +287,13 @@
 				<div id="playField">
 					<form id="playGrid">
 						<p>
-						<input id="L-O" type="button" onclick="javascript:clickAction('L-O');"/><input id="M-O" type="button" onclick="javascript:clickAction('M-O');"/><input id="R-O" type="button" onclick="javascript:clickAction('R-O');"/>
+						<input id="L-O" type="button" onclick="javascript:clickAction('L-O');" value=" "/><input id="M-O" type="button" onclick="javascript:clickAction('M-O');" value=" "/><input id="R-O" type="button" onclick="javascript:clickAction('R-O');" value=" "/>
 						</p>
 						<p>
-						<input id="L-M" type="button" onclick="javascript:clickAction('L-M');"/><input id="M-M" type="button" onclick="javascript:clickAction('M-M');"/><input id="R-M" type="button" onclick="javascript:clickAction('R-M');"/>
+						<input id="L-M" type="button" onclick="javascript:clickAction('L-M');" value=" "/><input id="M-M" type="button" onclick="javascript:clickAction('M-M');" value=" "/><input id="R-M" type="button" onclick="javascript:clickAction('R-M');" value=" "/>
 						</p>
 						<p>
-						<input id="L-U" type="button" onclick="javascript:clickAction('L-U');"/><input id="M-U" type="button" onclick="javascript:clickAction('M-U');"/><input id="R-U" type="button" onclick="javascript:clickAction('R-U');"/>
+						<input id="L-U" type="button" onclick="javascript:clickAction('L-U');" value=" "/><input id="M-U" type="button" onclick="javascript:clickAction('M-U');" value=" "/><input id="R-U" type="button" onclick="javascript:clickAction('R-U');" value=" "/>
 						</p>
 					</form>
 				</div>
