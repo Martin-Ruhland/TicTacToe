@@ -1,0 +1,291 @@
+﻿<!-- debug -->
+<html>
+	<head>
+		<title>Tic Tac Toe</title>
+		<meta charset="utf-8"/>
+		<style type="text/css">
+			body {
+				background-color: grey;
+			}
+			
+			#playField input {
+				width: 100px;
+				height: 100px;
+				font-size: 90px;
+				margin: 2px;
+			}
+			
+			#container {
+				background-color: white;
+				width: 315px;
+				margin: 20px auto;
+				padding: 20px;
+				box-shadow: 0 0 15px black;
+			}
+			
+			#playField p {
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+		<script>
+		var arrayField, arrayFieldId, selectedField, clickActionField, XorO, Row, Column, rowInNumber, columnInNumber, columnAdded, rowAdded, cGreen, gameFinished;
+		
+		// definition of colors for CSS-code
+		cGreen = '#89FF00';
+		
+		// true = X, false = O
+		XorO = true;
+
+		// gameFinished variable
+		gameFinished = false;
+		
+		// contains the current content of the play field in the form of numbers: X = 1 und O = 5
+		arrayField = 
+		[[ 0, 0, 0], 
+		[ 0, 0, 0],
+		[ 0, 0, 0]];
+		
+		// contains the IDs of the play field in the form of an multidimensional array
+		arrayFieldId = 
+		[[ 0, 0, 0], 
+		[ 0, 0, 0],
+		[ 0, 0, 0]];
+		
+		// initializes everything when the site is loaded
+		function init() {
+			readIdFromField();
+		}
+		
+		// reads the IDs of the playField and writes them into the multidimensional array 'arrayFieldId'
+		function readIdFromField() {
+			for (var i = 0; i < 9; i++) {
+				if (i < 3) {
+				arrayFieldId[0][i] = document.forms[0].elements[i].id;
+				}
+				else{
+					if (i < 6) {
+						arrayFieldId[1][i-3] = document.forms[0].elements[i].id;
+					}
+					else {
+						arrayFieldId[2][i-6] = document.forms[0].elements[i].id;
+					}
+				}
+			}
+		}
+	
+		// function that gets called when a field is clicked and handels everything related to checking and setting the X's and O's
+		function clickAction(selectedField) {
+			if (document.getElementById(selectedField).value == 'X' || document.getElementById(selectedField).value == 'O' ) {
+				console.log("Code unterbrochen");
+			}
+			else {
+				splitToArray(selectedField);
+				writeToArray();	
+			}
+			if (gameFinished == true) {
+				console.log("Code unterbrochen");
+			}
+			else {
+				setXorO(selectedField);
+				checkArray();
+				checkWinner();
+			}
+		}
+		
+		// sets X or O depending on what was set before
+		function setXorO (selectedField) {
+			if (document.getElementById(selectedField).value == 'X' || document.getElementById(selectedField).value == 'O' ) {
+				alert("Setzen nicht möglich!");
+			}
+			else {
+				if (XorO == true) {
+					document.getElementById(selectedField).value = "X";
+					XorO = false;
+				} else {
+					document.getElementById(selectedField).value = "O";
+					XorO = true;
+				}
+			}
+		}
+			
+		// converts the IDs to numbers so I can call the corresponding place in the array 
+		function splitToArray (selectedField) {
+			currentField = selectedField.split('-');
+			Column = currentField[0];
+			Row = currentField[1];
+
+			switch (Column) {
+				case 'L':
+					columnInNumber = 0;
+					break;
+				case 'M':
+					columnInNumber = 1;
+					break;
+				case 'R':
+					columnInNumber = 2;
+					break;
+				default:
+					alert('Programm Error. Please contact the developer!');
+			}
+			
+			switch (Row) {
+				case 'O':
+					rowInNumber = 0;
+					break;
+				case 'M':
+					rowInNumber = 1;
+					break;
+				case 'U':
+					rowInNumber = 2;
+					break;
+				default:
+					alert('Programm Error. Please contact the developer!');
+			}		
+		}
+		
+		// writes 1 for X or 5 for O into the multidimensional array "arrayField"
+		function writeToArray() {
+			if (XorO == true) {
+				arrayField[rowInNumber][columnInNumber] = 1;
+			}
+			else {
+				arrayField[rowInNumber][columnInNumber] = 5;
+			}
+		}
+		
+		// checks every column, row and diagonal for a win
+		function checkArray() {
+		// column detection
+			columnAdded = 0;
+			for (var i = 0; i < 3; i++) {
+				columnAdded = columnAdded + arrayField[i][0];
+			}
+			if (columnAdded == 3 || columnAdded == 15) {
+				colorWinning(0, 'column');
+			} else {
+				columnAdded = 0;
+				for (var i = 0; i < 3; i++) {
+					columnAdded = columnAdded + arrayField[i][1];
+				}
+				if (columnAdded == 3 || columnAdded == 15) {
+					colorWinning(1, 'column');
+				} else {
+					columnAdded = 0;
+					for (var i = 0; i < 3; i++) {
+						columnAdded = columnAdded + arrayField[i][2];
+					}
+					if (columnAdded == 3 || columnAdded == 15) {
+						colorWinning(2, 'column');
+					}
+				}
+			}
+				
+			// row detection
+			rowAdded = 0;
+			for (var i = 0; i < 3; i++) {
+				rowAdded = rowAdded + arrayField[0][i];
+			}
+			if (rowAdded == 3 || rowAdded == 15) {
+				colorWinning(0, 'row');
+			} else {
+				rowAdded = 0;
+				for (var i = 0; i < 3; i++) {
+					rowAdded = rowAdded + arrayField[1][i];
+				}
+				if (rowAdded == 3 || rowAdded == 15) {
+					colorWinning(1, 'row');
+				} else {
+					rowAdded = 0;
+					for (var i = 0; i < 3; i++) {
+						rowAdded = rowAdded + arrayField[2][i];
+					}
+					if (rowAdded == 3 || rowAdded == 15) {
+						colorWinning(2, 'row');
+					}
+				}
+			}
+			
+			// diagonal detection
+			diagonalAdded = 0;
+			diagonalAdded = arrayField[0][0] + arrayField[1][1] + arrayField[2][2];
+			if (diagonalAdded == 3 || diagonalAdded == 15) {
+				colorWinning(0, 'diagonal');
+			}
+			else {
+				diagonalAdded = 0;
+				diagonalAdded = arrayField[0][2] + arrayField[1][1] + arrayField[2][0];
+				if (diagonalAdded == 3 || diagonalAdded == 15) {
+					colorWinning(1, 'diagonal');
+				}
+			}
+		}
+		
+		// checks who has won
+		function checkWinner () {
+			if (columnAdded == 3 || rowAdded == 3 || diagonalAdded == 3) {
+				alert("Player 1 (X) won!");
+				gameFinished = true;
+			}
+			else if (columnAdded == 15 || rowAdded == 15 || diagonalAdded == 15) {
+				alert("Player 2 (O) won!");
+				gameFinished = true;
+			}
+			else {
+				console.log("nobody won!");
+			}
+			
+		}
+		
+		// colors the winning combo
+		function colorWinning(position, type) {
+			switch(type) {
+				case 'row':
+					for (var i = 0; i < 3; i++) {
+						document.getElementById(arrayFieldId[position][i]).style.background = cGreen;
+					}
+					break;
+				case 'column':
+					for (var i = 0; i < 3; i++) {
+						document.getElementById(arrayFieldId[i][position]).style.background = cGreen;
+					}
+					break;
+				case 'diagonal':
+					if (position == 0) {
+						document.getElementById(arrayFieldId[0][0]).style.background = cGreen;
+						document.getElementById(arrayFieldId[1][1]).style.background = cGreen;
+						document.getElementById(arrayFieldId[2][2]).style.background = cGreen;
+					}
+					else {
+						document.getElementById(arrayFieldId[0][2]).style.background = cGreen;
+						document.getElementById(arrayFieldId[1][1]).style.background = cGreen;
+						document.getElementById(arrayFieldId[2][0]).style.background = cGreen;
+					}
+					break;
+				default:
+					alert('Programm Error. Please contact the developer!');
+			}
+		}
+		</script>
+	</head>
+	<body onload="javascript:init();">
+		<div id="container">
+			<h1>Tic Tac Toe</h1>
+				<div id="playField">
+					<form id="playGrid">
+						<p>
+						<input id="L-O" type="button" onclick="javascript:clickAction('L-O');"/><input id="M-O" type="button" onclick="javascript:clickAction('M-O');"/><input id="R-O" type="button" onclick="javascript:clickAction('R-O');"/>
+						</p>
+						<p>
+						<input id="L-M" type="button" onclick="javascript:clickAction('L-M');"/><input id="M-M" type="button" onclick="javascript:clickAction('M-M');"/><input id="R-M" type="button" onclick="javascript:clickAction('R-M');"/>
+						</p>
+						<p>
+						<input id="L-U" type="button" onclick="javascript:clickAction('L-U');"/><input id="M-U" type="button" onclick="javascript:clickAction('M-U');"/><input id="R-U" type="button" onclick="javascript:clickAction('R-U');"/>
+						</p>
+					</form>
+				</div>
+				</br>
+				<input type="button" value="restart" onclick="javascript:window.location.reload();">
+		</div>
+	</body>
+</html>
