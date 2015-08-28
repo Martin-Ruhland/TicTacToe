@@ -43,10 +43,28 @@
 				box-shadow: 0 0 15px black;
 			}
 			
-
+			#statistic {
+				border: 1px solid black;
+				border-collapse: collapse;
+				width: 100%;
+				
+			}
+			
+			#statistic td {
+				padding: 5px;
+			}				
+			
+			.textAlignStatistics {
+				text-align: right;
+			}
+			
+			.greyBackground {
+				background-color: #E4E4E4;
+			}
 		</style>
 		<script>
-		var arrayField, arrayFieldId, selectedField, clickActionField, XorO, Row, Column, rowInNumber, columnInNumber, columnAdded, rowAdded, cGreen, gameFinished, xWon, oWon, timesXwon, timesOwon;
+		var arrayField, arrayFieldId, selectedField, clickActionField, XorO, Row, Column, rowInNumber, columnInNumber, columnAdded, rowAdded, cGreen, gameFinished, xWon, oWon, 
+		timesXwon, timesOwon, amountMoves, totalAmountMoves;
 		
 		// definition of colors for CSS-code
 		cGreen = '#89FF00';
@@ -58,8 +76,11 @@
 		// gameFinished variable
 		gameFinished = false;
 		
+		// variables for statistics
 		timesXwon = 0;
 		timesOwon = 0;
+		amountMoves = 0;
+		totalAmountMoves = 0;
 		
 		// contains the current content of the play field in the form of numbers: X = 1 und O = 5
 		arrayField = 
@@ -84,6 +105,7 @@
 			//reset variables
 			XorO = true;
 			gameFinished = false;
+			amountMoves = 0;
 			
 			arrayField = 
 			[[ 0, 0, 0], 
@@ -106,7 +128,7 @@
 					}
 				}
 			}
-		
+			writeStatistics();		
 		}
 		
 		// reads the IDs of the playField and writes them into the multidimensional array 'arrayFieldId'
@@ -159,7 +181,9 @@
 					document.getElementById(selectedField).value = "O";
 					XorO = true;
 				}
-			}
+				amountMoves = amountMoves + 1;
+				totalAmountMoves = totalAmountMoves + 1;
+			}			
 		}
 			
 		// converts the IDs to numbers so I can call the corresponding place in the array 
@@ -335,6 +359,9 @@
 					document.getElementById('player2won').innerHTML = timesOwon;
 				}
 			}
+			
+			document.getElementById('amountMoves').innerHTML = amountMoves;
+			document.getElementById('totalAmountMoves').innerHTML = totalAmountMoves;
 		}
 		</script>
 	</head>
@@ -358,17 +385,19 @@
 				<input type="button" value="restart" onclick="javascript:restartGame();">
 		</div>
 		<div id ="container">
-			<h2>statistic</h2>
-				<table>
+			<h2>statistics</h2>
+				<table id="statistic">
 					<tr>
-						<td>player:</td>
-						<td>times won:</td>
-					</td>
-					<tr>
-						<td>Player 1 (X) won</td><td id="player1won">0</td>
+						<td>Player 1 (X) won</td><td id="player1won" class="textAlignStatistics">0</td>
+					</tr>
+					<tr class="greyBackground">
+						<td>Player 2 (O) won</td><td id="player2won" class="textAlignStatistics">0</td>
 					</tr>
 					<tr>
-						<td>Player 2 (O) won</td><td id="player2won">0</td>
+						<td>Amount of moves:</td><td id="amountMoves" class="textAlignStatistics">0</td>
+					</tr>
+					<tr class="greyBackground">
+						<td>Total amount of moves:</td><td id="totalAmountMoves" class="textAlignStatistics">0</td>
 					</tr>
 				</table>
 		</div>
