@@ -26,6 +26,10 @@
 				padding: 0;
 			}
 			
+			#playGrid input {
+				background-color: #EEEEEE;
+			}
+			
 			#playField p {
 				margin: 0;
 				padding: 0;
@@ -42,16 +46,20 @@
 
 		</style>
 		<script>
-		var arrayField, arrayFieldId, selectedField, clickActionField, XorO, Row, Column, rowInNumber, columnInNumber, columnAdded, rowAdded, cGreen, gameFinished;
+		var arrayField, arrayFieldId, selectedField, clickActionField, XorO, Row, Column, rowInNumber, columnInNumber, columnAdded, rowAdded, cGreen, gameFinished, xWon, oWon, timesXwon, timesOwon;
 		
 		// definition of colors for CSS-code
 		cGreen = '#89FF00';
+		cDefault = '#EEEEEE';
 		
 		// true = X, false = O
 		XorO = true;
 
 		// gameFinished variable
 		gameFinished = false;
+		
+		timesXwon = 0;
+		timesOwon = 0;
 		
 		// contains the current content of the play field in the form of numbers: X = 1 und O = 5
 		arrayField = 
@@ -68,6 +76,37 @@
 		// initializes everything when the site is loaded
 		function init() {
 			readIdFromField();
+		}
+		
+		
+		// resets all variables and deletes the modifications made to the playGrid
+		function restartGame() {
+			//reset variables
+			XorO = true;
+			gameFinished = false;
+			
+			arrayField = 
+			[[ 0, 0, 0], 
+			[ 0, 0, 0],
+			[ 0, 0, 0]];
+			
+			for (var i = 0; i < 9; i++) {
+				if (i < 3) {
+				document.getElementById(arrayFieldId[0][i]).style.background = cDefault;
+				document.getElementById(arrayFieldId[0][i]).value = " ";
+				}
+				else{
+					if (i < 6) {
+						document.getElementById(arrayFieldId[1][i-3]).style.background = cDefault;
+						document.getElementById(arrayFieldId[1][i-3]).value = " ";
+					}
+					else {
+						document.getElementById(arrayFieldId[2][i-6]).style.background = cDefault;
+						document.getElementById(arrayFieldId[2][i-6]).value = " ";
+					}
+				}
+			}
+		
 		}
 		
 		// reads the IDs of the playField and writes them into the multidimensional array 'arrayFieldId'
@@ -103,6 +142,7 @@
 				setXorO(selectedField);
 				checkArray();
 				checkWinner();
+				writeStatistics();
 			}
 		}
 		
@@ -239,10 +279,14 @@
 			if (columnAdded == 3 || rowAdded == 3 || diagonalAdded == 3) {
 				alert("Player 1 (X) won!");
 				gameFinished = true;
+				xWon = true;
+				oWon = false;
 			}
 			else if (columnAdded == 15 || rowAdded == 15 || diagonalAdded == 15) {
 				alert("Player 2 (O) won!");
 				gameFinished = true;
+				xWon = false;
+				oWon = true;
 			}
 			else {
 				console.log("nobody won!");
@@ -279,6 +323,19 @@
 					alert('Programm Error. Please contact the developer!');
 			}
 		}
+		
+		function writeStatistics() {
+			if (gameFinished == true) {
+				if (xWon == true) {
+					timesXwon = timesXwon + 1;
+					document.getElementById('player1won').innerHTML = timesXwon;
+				}
+				else {
+					timesOwon = timesOwon + 1;
+					document.getElementById('player2won').innerHTML = timesOwon;
+				}
+			}
+		}
 		</script>
 	</head>
 	<body onload="javascript:init();">
@@ -298,7 +355,22 @@
 					</form>
 				</div>
 				</br>
-				<input type="button" value="restart" onclick="javascript:window.location.reload();">
+				<input type="button" value="restart" onclick="javascript:restartGame();">
+		</div>
+		<div id ="container">
+			<h2>statistic</h2>
+				<table>
+					<tr>
+						<td>player:</td>
+						<td>times won:</td>
+					</td>
+					<tr>
+						<td>Player 1 (X) won</td><td id="player1won">0</td>
+					</tr>
+					<tr>
+						<td>Player 2 (O) won</td><td id="player2won">0</td>
+					</tr>
+				</table>
 		</div>
 	</body>
 </html>
